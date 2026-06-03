@@ -1,10 +1,8 @@
-name: Nginx Docker CI
+name: CI
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
+    branches: main
 
 jobs:
   nginx-test:
