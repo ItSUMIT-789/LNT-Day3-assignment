@@ -1,0 +1,33 @@
+name: Nginx Docker CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  nginx-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build Custom Docker Image
+        run: docker build -t assignment-nginx .
+
+      - name: Run Container
+        run: docker run -d --name assignment-container -p 8080:80 assignment-nginx
+
+      - name: Wait for Nginx Startup
+        run: sleep 5
+
+      - name: Show Container Logs
+        run:  docker logs assignment-container
+
+      - name: Curl localhost:8080
+        run: curl http://localhost:8080
+
+      - name: Verify Custom Content
+        run: curl http://localhost:8080 | grep "Hello Sumit!"
